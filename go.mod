@@ -1,1 +1,1 @@
-module protos
+module github.com/OfficialEvsty/protos

@@ -4,11 +4,33 @@ package auth;
 
 option go_package = "authmod.sso.v1;ssov1";
 
-service Auth {
+service AuthService {
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+
+  // Обновить JWT access token
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+
+  // Завершить сессию пользователя
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+  // Завершить все сессии пользователя
+  rpc LogoutAll(LogoutAllRequest) returns (LogoutAllResponse);
+
+  // Получение информации о текущем пользователе
+  /*rpc GetCurrentUser(CurrentUserRequest) returns (CurrentUserResponse);*/
 }
+
+service SessionService {
+  // Получение списка активных сессий пользователя
+  rpc GetUserSessions(UserSessionsRequest) returns (UserSessionsResponse);
+
+  // Завершение конкретной сессии пользователя
+  rpc TerminateSession(TerminateSessionRequest) returns (TerminateSessionResponse);
+}
+
+// Auth
 
 message RegisterRequest {
   string email = 1; //Email of the user to register
@@ -35,4 +57,55 @@ message IsAdminRequest {
 
 message IsAdminResponse {
   bool is_admin = 1; // Indicates whether the user is an admin
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string access_token = 1; // newly generated access token
+  string refresh_token = 2; // newly generated refresh token
+  int64 expires_in = 3; // updated time when token expires
+}
+
+message LogoutRequest {
+  string refresh_token = 1;
+}
+
+message LogoutResponse {
+  string message = 1; // status response message of request
+}
+
+message LogoutAllRequest {
+  int64 user_id = 1;
+}
+
+message LogoutAllResponse {
+  string message = 1; // status response message of request
+}
+
+// Sessions
+message UserSessionsRequest {
+  int64 user_id = 1; // take it from current access token
+}
+
+message Session {
+  int64 session_id = 1;
+  string ip_address = 2;
+  string device = 3; // browser and operation system of user
+  int64 created_at = 4;
+  int64 expires_at = 5;
+}
+
+message UserSessionsResponse {
+  repeated Session sessions = 1;
+}
+
+message TerminateSessionRequest {
+  int64 session_id = 1;
+}
+
+message TerminateSessionResponse {
+  string message = 1;
 }

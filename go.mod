@@ -1,17 +1,14 @@
 module github.com/OfficialEvsty/protos
 
-
 go 1.23.2
-
 
 require (
 	google.golang.org/grpc v1.58.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.36.4
 )
 
 require (
-	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	golang.org/x/net v0.12.0 // indirect
 	golang.org/x/sys v0.10.0 // indirect
 	golang.org/x/text v0.11.0 // indirect

@@ -48,7 +48,8 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  string token = 1; // Auth token of the logged user
+  string access_token = 1; // Auth token of the logged user
+  string refresh_token = 2; // Refresh token of the logged user
 }
 
 message IsAdminRequest {

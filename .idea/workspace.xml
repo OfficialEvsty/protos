@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b4f4ebe1-b8bc-40f6-90a1-49bf4da1b08c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proto/sso/sso.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/sso/sso.proto" afterDir="false" />
     </list>
@@ -15,7 +14,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://$USER_HOME$/sdk/go1.23.2" />
+  <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -36,7 +35,8 @@
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "C:/Users/wwwww",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/home/evstigneev/Golang/protos",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"

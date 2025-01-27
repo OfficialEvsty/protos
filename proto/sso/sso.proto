@@ -61,7 +61,8 @@ message IsAdminResponse {
 }
 
 message RefreshTokenRequest {
-  string refresh_token = 1;
+  string refresh_token = 1; // user refresh token stores around a couple of days
+  int32 app_id = 2; // app id which user login to
 }
 
 message RefreshTokenResponse {

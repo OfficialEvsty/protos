@@ -317,8 +317,7 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	SessionService_GetUserSessions_FullMethodName  = "/auth.SessionService/GetUserSessions"
-	SessionService_TerminateSession_FullMethodName = "/auth.SessionService/TerminateSession"
+	SessionService_GetUserSessions_FullMethodName = "/auth.SessionService/GetUserSessions"
 )
 
 // SessionServiceClient is the client API for SessionService service.
@@ -327,8 +326,6 @@ const (
 type SessionServiceClient interface {
 	// Получение списка активных сессий пользователя
 	GetUserSessions(ctx context.Context, in *UserSessionsRequest, opts ...grpc.CallOption) (*UserSessionsResponse, error)
-	// Завершение конкретной сессии пользователя
-	TerminateSession(ctx context.Context, in *TerminateSessionRequest, opts ...grpc.CallOption) (*TerminateSessionResponse, error)
 }
 
 type sessionServiceClient struct {
@@ -349,24 +346,12 @@ func (c *sessionServiceClient) GetUserSessions(ctx context.Context, in *UserSess
 	return out, nil
 }
 
-func (c *sessionServiceClient) TerminateSession(ctx context.Context, in *TerminateSessionRequest, opts ...grpc.CallOption) (*TerminateSessionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TerminateSessionResponse)
-	err := c.cc.Invoke(ctx, SessionService_TerminateSession_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // SessionServiceServer is the server API for SessionService service.
 // All implementations must embed UnimplementedSessionServiceServer
 // for forward compatibility.
 type SessionServiceServer interface {
 	// Получение списка активных сессий пользователя
 	GetUserSessions(context.Context, *UserSessionsRequest) (*UserSessionsResponse, error)
-	// Завершение конкретной сессии пользователя
-	TerminateSession(context.Context, *TerminateSessionRequest) (*TerminateSessionResponse, error)
 	mustEmbedUnimplementedSessionServiceServer()
 }
 
@@ -379,9 +364,6 @@ type UnimplementedSessionServiceServer struct{}
 
 func (UnimplementedSessionServiceServer) GetUserSessions(context.Context, *UserSessionsRequest) (*UserSessionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserSessions not implemented")
-}
-func (UnimplementedSessionServiceServer) TerminateSession(context.Context, *TerminateSessionRequest) (*TerminateSessionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TerminateSession not implemented")
 }
 func (UnimplementedSessionServiceServer) mustEmbedUnimplementedSessionServiceServer() {}
 func (UnimplementedSessionServiceServer) testEmbeddedByValue()                        {}
@@ -422,24 +404,6 @@ func _SessionService_GetUserSessions_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SessionService_TerminateSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TerminateSessionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SessionServiceServer).TerminateSession(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SessionService_TerminateSession_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SessionServiceServer).TerminateSession(ctx, req.(*TerminateSessionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // SessionService_ServiceDesc is the grpc.ServiceDesc for SessionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -451,9 +415,151 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetUserSessions",
 			Handler:    _SessionService_GetUserSessions_Handler,
 		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "sso/sso.proto",
+}
+
+const (
+	AccessService_AssignGroupRole_FullMethodName = "/auth.AccessService/AssignGroupRole"
+	AccessService_RevokeGroupRole_FullMethodName = "/auth.AccessService/RevokeGroupRole"
+)
+
+// AccessServiceClient is the client API for AccessService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Service controlling user's role group defining their access
+type AccessServiceClient interface {
+	// Assigns user a access role
+	AssignGroupRole(ctx context.Context, in *AssignGroupRoleRequest, opts ...grpc.CallOption) (*AssignGroupRoleResponse, error)
+	RevokeGroupRole(ctx context.Context, in *RevokeGroupRoleRequest, opts ...grpc.CallOption) (*RevokeGroupRoleResponse, error)
+}
+
+type accessServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewAccessServiceClient(cc grpc.ClientConnInterface) AccessServiceClient {
+	return &accessServiceClient{cc}
+}
+
+func (c *accessServiceClient) AssignGroupRole(ctx context.Context, in *AssignGroupRoleRequest, opts ...grpc.CallOption) (*AssignGroupRoleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignGroupRoleResponse)
+	err := c.cc.Invoke(ctx, AccessService_AssignGroupRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accessServiceClient) RevokeGroupRole(ctx context.Context, in *RevokeGroupRoleRequest, opts ...grpc.CallOption) (*RevokeGroupRoleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeGroupRoleResponse)
+	err := c.cc.Invoke(ctx, AccessService_RevokeGroupRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AccessServiceServer is the server API for AccessService service.
+// All implementations must embed UnimplementedAccessServiceServer
+// for forward compatibility.
+//
+// Service controlling user's role group defining their access
+type AccessServiceServer interface {
+	// Assigns user a access role
+	AssignGroupRole(context.Context, *AssignGroupRoleRequest) (*AssignGroupRoleResponse, error)
+	RevokeGroupRole(context.Context, *RevokeGroupRoleRequest) (*RevokeGroupRoleResponse, error)
+	mustEmbedUnimplementedAccessServiceServer()
+}
+
+// UnimplementedAccessServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedAccessServiceServer struct{}
+
+func (UnimplementedAccessServiceServer) AssignGroupRole(context.Context, *AssignGroupRoleRequest) (*AssignGroupRoleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AssignGroupRole not implemented")
+}
+func (UnimplementedAccessServiceServer) RevokeGroupRole(context.Context, *RevokeGroupRoleRequest) (*RevokeGroupRoleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeGroupRole not implemented")
+}
+func (UnimplementedAccessServiceServer) mustEmbedUnimplementedAccessServiceServer() {}
+func (UnimplementedAccessServiceServer) testEmbeddedByValue()                       {}
+
+// UnsafeAccessServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AccessServiceServer will
+// result in compilation errors.
+type UnsafeAccessServiceServer interface {
+	mustEmbedUnimplementedAccessServiceServer()
+}
+
+func RegisterAccessServiceServer(s grpc.ServiceRegistrar, srv AccessServiceServer) {
+	// If the following call pancis, it indicates UnimplementedAccessServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&AccessService_ServiceDesc, srv)
+}
+
+func _AccessService_AssignGroupRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignGroupRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccessServiceServer).AssignGroupRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccessService_AssignGroupRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccessServiceServer).AssignGroupRole(ctx, req.(*AssignGroupRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccessService_RevokeGroupRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeGroupRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccessServiceServer).RevokeGroupRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccessService_RevokeGroupRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccessServiceServer).RevokeGroupRole(ctx, req.(*RevokeGroupRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// AccessService_ServiceDesc is the grpc.ServiceDesc for AccessService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var AccessService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "auth.AccessService",
+	HandlerType: (*AccessServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "TerminateSession",
-			Handler:    _SessionService_TerminateSession_Handler,
+			MethodName: "AssignGroupRole",
+			Handler:    _AccessService_AssignGroupRole_Handler,
+		},
+		{
+			MethodName: "RevokeGroupRole",
+			Handler:    _AccessService_RevokeGroupRole_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -26,8 +26,16 @@ service SessionService {
   // Получение списка активных сессий пользователя
   rpc GetUserSessions(UserSessionsRequest) returns (UserSessionsResponse);
 
-  // Завершение конкретной сессии пользователя
-  rpc TerminateSession(TerminateSessionRequest) returns (TerminateSessionResponse);
+/*  // Завершение конкретной сессии пользователя
+  rpc TerminateSession(TerminateSessionRequest) returns (TerminateSessionResponse);*/
+}
+
+// Service controlling user's role group defining their access
+service AccessService {
+  // Assigns user a access role
+  rpc AssignGroupRole(AssignGroupRoleRequest) returns (AssignGroupRoleResponse);
+
+  rpc RevokeGroupRole(RevokeGroupRoleRequest) returns (RevokeGroupRoleResponse);
 }
 
 // Auth
@@ -88,26 +96,42 @@ message LogoutAllResponse {
 }
 
 // Sessions
+
 message UserSessionsRequest {
   int64 user_id = 1; // take it from current access token
 }
 
 message Session {
   int64 session_id = 1;
-  string ip_address = 2;
-  string device = 3; // browser and operation system of user
-  int64 created_at = 4;
-  int64 expires_at = 5;
+  string user_id = 2;
+  string app_id = 3;
+  string ip_address = 4;
+  string device = 5; // browser and operation system of user
+  int64 created_at = 6;
 }
 
 message UserSessionsResponse {
   repeated Session sessions = 1;
 }
 
-message TerminateSessionRequest {
-  int64 session_id = 1;
+// Access
+
+message AssignGroupRoleRequest {
+  int64 user_id = 1;
+  int32 role_id = 2;
 }
 
-message TerminateSessionResponse {
-  string message = 1;
+message AssignGroupRoleResponse {
+  bool result = 1;
+  string message = 2;
+}
+
+message RevokeGroupRoleRequest {
+  int64 user_id = 1;
+  int32 role_id = 2;
+}
+
+message RevokeGroupRoleResponse {
+  bool result = 1;
+  string message = 2;
 }

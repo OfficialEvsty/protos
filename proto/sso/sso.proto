@@ -119,6 +119,7 @@ message UserSessionsResponse {
 message AssignGroupRoleRequest {
   int64 user_id = 1;
   int32 role_id = 2;
+  string access_token = 3;
 }
 
 message AssignGroupRoleResponse {
@@ -129,6 +130,7 @@ message AssignGroupRoleResponse {
 message RevokeGroupRoleRequest {
   int64 user_id = 1;
   int32 role_id = 2;
+  string access_token = 3;
 }
 
 message RevokeGroupRoleResponse {

@@ -89,6 +89,7 @@ message LogoutResponse {
 
 message LogoutAllRequest {
   int64 user_id = 1;
+  string token = 2;
 }
 
 message LogoutAllResponse {

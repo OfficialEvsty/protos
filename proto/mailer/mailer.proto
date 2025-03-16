@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package mailer;
+
+option go_package = "mailermod.mailer.v1;mailerv1";
+
+service MailService {
+  rpc SendMail(SendMailRequest) returns (SendMailResponse);
+}
+
+message SendMailRequest {
+  string email = 1;
+  string pass = 2;
+  string to = 3;
+  string subject = 4;
+  string text = 5;
+  string html = 6;
+}
+
+message SendMailResponse {
+  bool error = 1;
+  string error_text = 2;
+}

@@ -38,6 +38,19 @@ service AccessService {
   rpc RevokeGroupRole(RevokeGroupRoleRequest) returns (RevokeGroupRoleResponse);
 }
 
+// SVO
+service VerificationService {
+  rpc SaveEmailToken(SaveEmailTokenRequest) returns (SaveEmailTokenResponse);
+
+  rpc VerifyEmailToken(VerifyEmailTokenRequest) returns (VerifyEmailTokenResponse);
+
+  rpc SaveResetToken(SaveResetTokenRequest) returns (SaveResetTokenResponse);
+
+  rpc ResetToken(ResetTokenRequest) returns (ResetTokenResponse);
+
+  rpc RevokeResetToken(RevokeResetTokenRequest) returns (RevokeResetTokenResponse);
+}
+
 // Auth
 
 message RegisterRequest {
@@ -138,4 +151,12 @@ message RevokeGroupRoleRequest {
 message RevokeGroupRoleResponse {
   bool result = 1;
   string message = 2;
+}
+
+// SVO
+
+message SaveEmailTokenRequest {
+  string token = 1;
+  string email = 2;
+  string password
 }

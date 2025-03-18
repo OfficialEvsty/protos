@@ -38,6 +38,12 @@ service AccessService {
   rpc RevokeGroupRole(RevokeGroupRoleRequest) returns (RevokeGroupRoleResponse);
 }
 
+service VerificationService {
+  rpc SaveEmailToken(SaveEmailTokenRequest) returns (SaveEmailTokenResponse);
+
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse);
+}
+
 // Auth
 
 message RegisterRequest {
@@ -139,4 +145,25 @@ message RevokeGroupRoleRequest {
 message RevokeGroupRoleResponse {
   bool result = 1;
   string message = 2;
+}
+
+message SaveEmailTokenRequest {
+  string email = 1;
+  string token = 2;
+}
+
+message SaveEmailTokenResponse {
+  bool error = 1;
+  int32 error_code = 2;
+  string error_message = 3;
+}
+
+message VerifyEmailRequest {
+  string token = 1;
+}
+
+message VerifyEmailResponse {
+  bool error = 1;
+  int32 error_code = 2;
+  string error_message = 3;
 }

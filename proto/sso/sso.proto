@@ -5,6 +5,10 @@ package auth;
 option go_package = "authmod.sso.v1;ssov1";
 
 service AuthService {
+  //oauth2.1
+  rpc Authorize (AuthorizeRequest) returns (AuthorizeResponse);
+  rpc Token (TokenRequest) returns (TokenResponse);
+  //auth
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
@@ -44,6 +48,58 @@ service VerificationService {
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse);
 }
 
+//OAUTH2.1
+    // important contract for implementing oauth2.1
+message AuthorizeRequest {
+  string response_type = 1; // code
+  string client_id = 2; // client_id serial for every client application
+  string scope = 3; // scope permissions for secure api interaction
+  string redirect_uri = 4; // redirect on callback client page for receiving auth code
+  string state = 5; // additional secure method approving
+  string code_challenge = 6; // pkce protection
+  string code_challenge_method = 7; // hash method name
+}
+
+message AuthorizeResponse {
+  oneof response {
+    SuccessResponse success = 1;
+    AuthenticationRequired auth_required = 2;
+    ErrorResponse error = 3;
+  }
+}
+
+message SuccessResponse {
+  string redirect_uri = 1; // client redirect to
+  string code = 2; // response_type=code
+  string state = 3; // provided state by client
+}
+
+message AuthenticationRequired {
+  string login_url = 1; // login form url
+  string session_id = 2; // temporary session_id
+}
+
+message ErrorResponse {
+  string error = 1; // "invalid request"
+  string error_description = 2; // details of error
+}
+
+message TokenRequest {
+  string auth_code = 1;
+  string redirect_uri = 2;
+  string code_verifier = 3;
+  string state = 4;
+  string client_id = 5;
+}
+
+message TokenResponse {
+  string id_token = 1;
+  string access_token = 2;
+  string token_type = 3;
+  uint32 expires_in = 4;
+  string scope = 5;
+  string refresh_token = 6;
+}
 // Auth
 
 message RegisterRequest {
@@ -59,12 +115,15 @@ message RegisterResponse {
 message LoginRequest {
   string email = 1; // Email of the user to login.
   string password = 2; // Password of the user to login
-  int32 app_id = 3; // Id og the app to login into
 }
 
 message LoginResponse {
-  string access_token = 1; // Auth token of the logged user
-  string refresh_token = 2; // Refresh token of the logged user
+  string redirect_uri = 1; // client redirect to
+  string code = 2; // response_type=code
+  string state = 3; // provided state by client
+  //bool success = 1; // indicates whether current login successful
+  //string access_token = 1; // Auth token of the logged user
+  //string refresh_token = 2; // Refresh token of the logged user
 }
 
 message IsAdminRequest {

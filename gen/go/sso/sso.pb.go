@@ -379,10 +379,10 @@ func (x *ErrorResponse) GetErrorDescription() string {
 
 type TokenRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AuthCode      string                 `protobuf:"bytes,1,opt,name=auth_code,json=authCode,proto3" json:"auth_code,omitempty"`
-	RedirectUri   string                 `protobuf:"bytes,2,opt,name=redirect_uri,json=redirectUri,proto3" json:"redirect_uri,omitempty"`
-	CodeVerifier  string                 `protobuf:"bytes,3,opt,name=code_verifier,json=codeVerifier,proto3" json:"code_verifier,omitempty"`
-	State         string                 `protobuf:"bytes,4,opt,name=state,proto3" json:"state,omitempty"`
+	GrantType     string                 `protobuf:"bytes,1,opt,name=grant_type,json=grantType,proto3" json:"grant_type,omitempty"`
+	AuthCode      string                 `protobuf:"bytes,2,opt,name=auth_code,json=authCode,proto3" json:"auth_code,omitempty"`
+	RedirectUri   string                 `protobuf:"bytes,3,opt,name=redirect_uri,json=redirectUri,proto3" json:"redirect_uri,omitempty"`
+	CodeVerifier  string                 `protobuf:"bytes,4,opt,name=code_verifier,json=codeVerifier,proto3" json:"code_verifier,omitempty"`
 	ClientId      string                 `protobuf:"bytes,5,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -418,6 +418,13 @@ func (*TokenRequest) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{5}
 }
 
+func (x *TokenRequest) GetGrantType() string {
+	if x != nil {
+		return x.GrantType
+	}
+	return ""
+}
+
 func (x *TokenRequest) GetAuthCode() string {
 	if x != nil {
 		return x.AuthCode
@@ -435,13 +442,6 @@ func (x *TokenRequest) GetRedirectUri() string {
 func (x *TokenRequest) GetCodeVerifier() string {
 	if x != nil {
 		return x.CodeVerifier
-	}
-	return ""
-}
-
-func (x *TokenRequest) GetState() string {
-	if x != nil {
-		return x.State
 	}
 	return ""
 }
@@ -1794,12 +1794,13 @@ const file_sso_sso_proto_rawDesc = "" +
 	"session_id\x18\x02 \x01(\tR\tsessionId\"R\n" +
 	"\rErrorResponse\x12\x14\n" +
 	"\x05error\x18\x01 \x01(\tR\x05error\x12+\n" +
-	"\x11error_description\x18\x02 \x01(\tR\x10errorDescription\"\xa6\x01\n" +
-	"\fTokenRequest\x12\x1b\n" +
-	"\tauth_code\x18\x01 \x01(\tR\bauthCode\x12!\n" +
-	"\fredirect_uri\x18\x02 \x01(\tR\vredirectUri\x12#\n" +
-	"\rcode_verifier\x18\x03 \x01(\tR\fcodeVerifier\x12\x14\n" +
-	"\x05state\x18\x04 \x01(\tR\x05state\x12\x1b\n" +
+	"\x11error_description\x18\x02 \x01(\tR\x10errorDescription\"\xaf\x01\n" +
+	"\fTokenRequest\x12\x1d\n" +
+	"\n" +
+	"grant_type\x18\x01 \x01(\tR\tgrantType\x12\x1b\n" +
+	"\tauth_code\x18\x02 \x01(\tR\bauthCode\x12!\n" +
+	"\fredirect_uri\x18\x03 \x01(\tR\vredirectUri\x12#\n" +
+	"\rcode_verifier\x18\x04 \x01(\tR\fcodeVerifier\x12\x1b\n" +
 	"\tclient_id\x18\x05 \x01(\tR\bclientId\"\xc6\x01\n" +
 	"\rTokenResponse\x12\x19\n" +
 	"\bid_token\x18\x01 \x01(\tR\aidToken\x12!\n" +

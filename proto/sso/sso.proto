@@ -85,10 +85,10 @@ message ErrorResponse {
 }
 
 message TokenRequest {
-  string auth_code = 1;
-  string redirect_uri = 2;
-  string code_verifier = 3;
-  string state = 4;
+  string grant_type = 1;
+  string auth_code = 2;
+  string redirect_uri = 3;
+  string code_verifier = 4;
   string client_id = 5;
 }
 

@@ -119,8 +119,6 @@ message LoginRequest {
 
 message LoginResponse {
   string redirect_uri = 1; // client redirect to
-  string code = 2; // response_type=code
-  string state = 3; // provided state by client
   //bool success = 1; // indicates whether current login successful
   //string access_token = 1; // Auth token of the logged user
   //string refresh_token = 2; // Refresh token of the logged user

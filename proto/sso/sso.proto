@@ -46,6 +46,8 @@ service VerificationService {
   rpc SaveEmailToken(SaveEmailTokenRequest) returns (SaveEmailTokenResponse);
 
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse);
+
+  rpc GetJwks(GetJwksRequest) returns (GetJwksResponse);
 }
 
 //OAUTH2.1
@@ -85,11 +87,23 @@ message ErrorResponse {
 }
 
 message TokenRequest {
-  string grant_type = 1;
-  string auth_code = 2;
-  string redirect_uri = 3;
-  string code_verifier = 4;
-  string client_id = 5;
+  oneof grant_type {
+    AuthorizationCodeGrant authorization_code = 1;
+    RefreshTokenGrant refresh_token = 2;
+  }
+}
+
+message AuthorizationCodeGrant {
+  string auth_code = 1;
+  string redirect_uri = 2;
+  string code_verifier = 3;
+  string client_id = 4;
+}
+
+message RefreshTokenGrant {
+  string refresh_token = 1;
+  string client_id = 2;
+  string client_secret = 3;
 }
 
 message TokenResponse {
@@ -224,4 +238,18 @@ message VerifyEmailResponse {
   bool error = 1;
   int32 error_code = 2;
   string error_message = 3;
+}
+
+message GetJwksRequest {}
+
+message GetJwksResponse {
+  repeated Jwk keys = 1;
+}
+
+message Jwk {
+  string kty = 1;   // RSA / ES
+  string kid = 2;   // Key ID
+  string n = 3;     // Modulus
+  string e = 4;     // Exponent
+  string alg = 5;   // RS256 / ES256
 }

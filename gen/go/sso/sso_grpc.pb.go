@@ -649,6 +649,7 @@ var AccessService_ServiceDesc = grpc.ServiceDesc{
 const (
 	VerificationService_SaveEmailToken_FullMethodName = "/auth.VerificationService/SaveEmailToken"
 	VerificationService_VerifyEmail_FullMethodName    = "/auth.VerificationService/VerifyEmail"
+	VerificationService_GetJwks_FullMethodName        = "/auth.VerificationService/GetJwks"
 )
 
 // VerificationServiceClient is the client API for VerificationService service.
@@ -657,6 +658,7 @@ const (
 type VerificationServiceClient interface {
 	SaveEmailToken(ctx context.Context, in *SaveEmailTokenRequest, opts ...grpc.CallOption) (*SaveEmailTokenResponse, error)
 	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
+	GetJwks(ctx context.Context, in *GetJwksRequest, opts ...grpc.CallOption) (*GetJwksResponse, error)
 }
 
 type verificationServiceClient struct {
@@ -687,12 +689,23 @@ func (c *verificationServiceClient) VerifyEmail(ctx context.Context, in *VerifyE
 	return out, nil
 }
 
+func (c *verificationServiceClient) GetJwks(ctx context.Context, in *GetJwksRequest, opts ...grpc.CallOption) (*GetJwksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetJwksResponse)
+	err := c.cc.Invoke(ctx, VerificationService_GetJwks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VerificationServiceServer is the server API for VerificationService service.
 // All implementations must embed UnimplementedVerificationServiceServer
 // for forward compatibility.
 type VerificationServiceServer interface {
 	SaveEmailToken(context.Context, *SaveEmailTokenRequest) (*SaveEmailTokenResponse, error)
 	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
+	GetJwks(context.Context, *GetJwksRequest) (*GetJwksResponse, error)
 	mustEmbedUnimplementedVerificationServiceServer()
 }
 
@@ -708,6 +721,9 @@ func (UnimplementedVerificationServiceServer) SaveEmailToken(context.Context, *S
 }
 func (UnimplementedVerificationServiceServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
+}
+func (UnimplementedVerificationServiceServer) GetJwks(context.Context, *GetJwksRequest) (*GetJwksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetJwks not implemented")
 }
 func (UnimplementedVerificationServiceServer) mustEmbedUnimplementedVerificationServiceServer() {}
 func (UnimplementedVerificationServiceServer) testEmbeddedByValue()                             {}
@@ -766,6 +782,24 @@ func _VerificationService_VerifyEmail_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VerificationService_GetJwks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetJwksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VerificationServiceServer).GetJwks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VerificationService_GetJwks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VerificationServiceServer).GetJwks(ctx, req.(*GetJwksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VerificationService_ServiceDesc is the grpc.ServiceDesc for VerificationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -780,6 +814,10 @@ var VerificationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyEmail",
 			Handler:    _VerificationService_VerifyEmail_Handler,
+		},
+		{
+			MethodName: "GetJwks",
+			Handler:    _VerificationService_GetJwks_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
